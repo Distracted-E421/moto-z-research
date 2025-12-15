@@ -1,0 +1,99 @@
+# ═══════════════════════════════════════════════════════════
+# SENSITIVE DATA - Never commit
+# ═══════════════════════════════════════════════════════════
+
+# Firmware dumps (contain device-specific data)
+dumps/
+*.img
+*.bin
+*.mbn
+*.elf
+!*.img.md  # Keep documentation about images
+
+# EDL tool (has its own git)
+edl/
+*.loader
+
+# Keys and credentials
+*.pem
+*.key
+*.cert
+*.p12
+secrets/
+.env
+.env.*
+
+# Device-specific data
+device_data/
+unlock_keys/
+
+# ═══════════════════════════════════════════════════════════
+# BUILD/ANALYSIS ARTIFACTS
+# ═══════════════════════════════════════════════════════════
+
+# Ghidra projects (large, local-specific)
+*.gpr
+*.rep/
+ghidra_projects/
+
+# Radare2
+*.r2
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+.venv/
+
+# Nix
+result
+result-*
+.direnv/
+
+# ═══════════════════════════════════════════════════════════
+# IDE/EDITOR
+# ═══════════════════════════════════════════════════════════
+
+# Cursor/VSCode
+.vscode/
+*.code-workspace
+
+# JetBrains
+.idea/
+*.iml
+
+# Vim
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# ═══════════════════════════════════════════════════════════
+# TEMPORARY
+# ═══════════════════════════════════════════════════════════
+
+tmp/
+temp/
+*.tmp
+*.log
+*.bak

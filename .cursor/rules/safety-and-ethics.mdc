@@ -1,0 +1,127 @@
+# Safety and Ethics Guidelines
+
+## 🔒 Research Ethics
+
+### What This Project IS
+
+- ✅ Educational security research
+- ✅ Right-to-repair advocacy
+- ✅ Reducing e-waste by enabling device reuse
+- ✅ Open-source tool development
+- ✅ Understanding proprietary systems
+
+### What This Project IS NOT
+
+- ❌ A method to unlock stolen devices
+- ❌ Circumvention for illegal purposes
+- ❌ Commercial unlock service
+- ❌ Warranty fraud enablement
+
+## ⚠️ Safety Rules
+
+### Device Operations
+
+Before any firmware operation:
+- [ ] Verify you have full backup via EDL
+- [ ] Confirm EDL flashing works (test with known-good image)
+- [ ] Have recovery plan documented
+- [ ] Accept potential device loss
+
+### Never Execute Without Confirmation
+
+```bash
+# ALWAYS ASK BEFORE:
+fastboot oem unlock <key>      # Bootloader unlock
+fastboot flash <part> <image>  # Partition flashing
+edl w <part> <image>           # EDL write operations
+```
+
+### Firmware Backup Checklist
+
+Before ANY modification:
+- [ ] `abl_a.img` dumped
+- [ ] `xbl_a.img` dumped  
+- [ ] `tz_a.img` dumped
+- [ ] `devinfo` dumped
+- [ ] Full GPT backed up
+- [ ] Verified dump integrity (SHA256)
+
+## 🔐 Data Handling
+
+### Never Commit to Public Repos
+
+| Data Type | Example | Why |
+|-----------|---------|-----|
+| IMEI | 352156100832017 | Device identifier |
+| Unlock keys | XXXX-XXXX... | Device-specific |
+| Private keys | RSA private | Security |
+| Credentials | API tokens | Security |
+
+### Safe to Share
+
+| Data Type | Example |
+|-----------|---------|
+| Analysis techniques | Ghidra scripts |
+| Generic patterns | Certificate structure |
+| Tools | Parsers, analyzers |
+| Documentation | Research findings |
+
+## 🎯 Responsible Disclosure
+
+If you discover:
+1. **Security vulnerability** → Report to Motorola first
+2. **Bypass method** → Document privately, consider implications
+3. **Tool that could be abused** → Add appropriate safeguards
+
+### Disclosure Timeline
+
+1. Private documentation
+2. Vendor notification (90 days)
+3. Public disclosure (with safeguards)
+4. Tool release (with ethical guidelines)
+
+## ⚖️ Legal Considerations
+
+### Generally Legal (US)
+
+- Analyzing devices you own
+- Security research (DMCA exemptions)
+- Interoperability (reverse engineering for compatibility)
+- Right to repair
+
+### Potentially Problematic
+
+- Circumventing DRM for non-permitted purposes
+- Distributing circumvention tools commercially
+- Unauthorized access to systems
+- IMEI modification (federally illegal in US)
+
+### When in Doubt
+
+- Consult with legal counsel
+- Document research purpose clearly
+- Keep research private until reviewed
+- Consider academic/non-profit frameworks
+
+## 📋 Pre-Operation Checklist
+
+### Before Flashing ANYTHING
+
+```
+□ Is this my own device?
+□ Do I have complete backup?
+□ Have I tested recovery procedure?
+□ Do I understand what this will do?
+□ Am I prepared for device loss?
+□ Is there a safer alternative?
+```
+
+### Before Publishing ANYTHING
+
+```
+□ Does this contain identifying information?
+□ Could this be used maliciously?
+□ Have I considered responsible disclosure?
+□ Is there educational value?
+□ Have I added appropriate warnings?
+```

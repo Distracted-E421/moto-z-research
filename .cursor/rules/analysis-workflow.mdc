@@ -1,0 +1,152 @@
+# Analysis Workflow Rules
+
+## 🔬 Binary Analysis Workflow
+
+### Phase 1: Reconnaissance
+
+1. **File identification**
+   ```bash
+   file <binary>
+   binwalk <binary>
+   hexyl <binary> | head -100
+   ```
+
+2. **String extraction**
+   ```bash
+   strings -n 8 <binary> > strings.txt
+   strings -n 8 <binary> | grep -iE "unlock|verify|sign|cert"
+   ```
+
+3. **Initial structure**
+   ```bash
+   readelf -h <binary>  # If ELF
+   r2 -qc 'iI' <binary>  # Radare2 info
+   ```
+
+### Phase 2: Static Analysis
+
+1. **Load in Ghidra**
+   - Processor: ARM:LE:32:v8
+   - Base address: Check binary headers
+   - Analyze → Auto Analysis
+
+2. **Find entry points**
+   - Look for reset vectors
+   - Find main/entry functions
+   - Identify interrupt handlers
+
+3. **Map key functions**
+   - String references
+   - Import/export tables
+   - Cross-references
+
+### Phase 3: Deep Analysis
+
+1. **Decompile target functions**
+2. **Document findings in markdown**
+3. **Create analysis scripts for reproducibility**
+4. **Note uncertain areas for dynamic verification**
+
+## 📝 Documentation Format
+
+### Function Analysis Template
+
+```markdown
+## Function: verify_unlock_key
+
+**Address**: 0x9FA12340
+**Size**: 0x1A8 bytes
+**Decompiler confidence**: Medium
+
+### Purpose
+Verifies the unlock key signature against device data.
+
+### Arguments
+- arg0 (r0): Pointer to key buffer
+- arg1 (r1): Key length
+- arg2 (r2): Output status pointer
+
+### Key Operations
+1. Loads device HWID from secure storage
+2. Computes SHA256 hash
+3. Verifies RSA signature
+4. Returns result in r0
+
+### Related Functions
+- `compute_device_hash` @ 0x9FA11000
+- `rsa_verify` @ 0x9FA15000
+
+### Notes
+- Uses SCM call at 0x9FA12380 for TZ access
+- Certificate chain validated before key check
+
+### Confidence
+- High: Overall structure
+- Medium: Exact hash algorithm
+- Low: TZ implementation details
+```
+
+## 🔧 Tool Usage
+
+### Ghidra Headless
+
+```bash
+# Import and analyze
+analyzeHeadless /project/dir ProjectName \
+  -import <binary> \
+  -processor ARM:LE:32:v8 \
+  -postScript find_unlock.py
+
+# Run script on existing project
+analyzeHeadless /project/dir ProjectName \
+  -process <binary> \
+  -postScript extract_strings.py
+```
+
+### Radare2 Quick Analysis
+
+```bash
+# Full analysis
+r2 -AA <binary>
+
+# Useful commands
+afl          # List functions
+axt @addr    # Xrefs to address
+pdf @func    # Disassemble function
+pdc @func    # Decompile function
+izz          # All strings
+```
+
+### Frida Hooks
+
+```javascript
+// Template for function hook
+Interceptor.attach(ptr("0x12345678"), {
+    onEnter: function(args) {
+        console.log("[*] Function called");
+        console.log("    arg0: " + args[0]);
+    },
+    onLeave: function(retval) {
+        console.log("    return: " + retval);
+    }
+});
+```
+
+## 📊 Progress Tracking
+
+### Analysis Status Template
+
+| Component | Status | Confidence | Notes |
+|-----------|--------|------------|-------|
+| ABL entry point | ✅ Found | High | 0x9FA00000 |
+| Unlock handler | 🔄 Analyzing | Medium | Multiple candidates |
+| TZ interface | ❌ Unknown | Low | Needs dynamic analysis |
+| Certificate chain | ✅ Mapped | High | 3-level PKI |
+
+### Milestones
+
+- [ ] Complete string analysis
+- [ ] Map all fastboot handlers
+- [ ] Identify verification function
+- [ ] Document TZ interface
+- [ ] Create analysis tools

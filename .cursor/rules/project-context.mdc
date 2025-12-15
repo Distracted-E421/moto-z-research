@@ -1,0 +1,82 @@
+# Moto Z Research Project Context
+
+## 🎯 Project Overview
+
+This repository is dedicated to:
+1. **Reverse engineering Motorola bootloader unlock system**
+2. **Understanding the Moto Mods interface (Greybus/POGO)**
+3. **Liberating carrier-locked Moto Z devices**
+4. **Creating open-source tools and documentation**
+
+## 📱 Target Devices
+
+Primary focus: Motorola Moto Z series
+- Moto Z / Z Force / Z Play (2016) - Codename: griffin/addison
+- Moto Z2 Force / Z2 Play (2017) - Codename: nash/albus
+- Moto Z3 / Z3 Play (2018) - Codename: messi/beckham
+- Moto Z4 (2019) - Codename: foles
+
+Key SoCs:
+- Snapdragon 820/625 (Z1 gen)
+- Snapdragon 835/626 (Z2 gen)
+- Snapdragon 835/636 (Z3 gen)
+- Snapdragon 675 (Z4)
+
+## 🔧 Development Environment
+
+This project uses NixOS with a custom flake providing:
+- Ghidra (primary disassembler)
+- Radare2/Rizin (secondary analysis)
+- Python 3.12 with RE packages
+- Android tools (adb, fastboot)
+- ARM toolchains
+
+Enter environment with: `nix develop`
+
+## 📁 Directory Structure
+
+```
+moto-z-research/
+├── src/
+│   ├── analysis/      # Ghidra scripts, r2 scripts
+│   ├── tools/         # Python tools for unlock analysis
+│   └── scripts/       # Shell scripts for automation
+├── docs/
+│   ├── research/      # Technical findings
+│   ├── hardware/      # Moto Mods, POGO specs
+│   └── guides/        # How-to guides
+├── dumps/             # Firmware dumps (gitignored)
+├── firmware/          # Firmware tools, extracted files
+├── hardware/          # PCB designs, schematics
+└── nix/               # Additional Nix modules
+```
+
+## 🔬 Analysis Conventions
+
+### Binary Analysis
+
+When analyzing ARM binaries:
+- Architecture: ARM 32-bit Little Endian (ARMv7/v8)
+- Base address: Usually 0x9fa00000 for ABL
+- Look for Qualcomm-specific patterns (SCM calls, etc.)
+
+### Naming Conventions
+
+Functions:
+- `verify_*` - Verification/signature checking
+- `handle_*` - Command/event handlers
+- `scm_*` - TrustZone secure monitor calls
+- `crypto_*` - Cryptographic operations
+
+Files:
+- `*_analysis.py` - Analysis scripts
+- `*_parser.py` - Binary/data parsers
+- `hook_*.js` - Frida hooks
+
+### Documentation
+
+All findings should be documented in markdown with:
+- Technical details
+- Memory addresses
+- Code snippets
+- References to source material

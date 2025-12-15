@@ -1,0 +1,138 @@
+# Language Philosophy for Moto Z Research
+
+## 🎯 Core Philosophy
+
+This project prioritizes **clarity, reproducibility, and security-awareness** in code.
+
+## 📚 Preferred Language Stack
+
+### Tier 1: Primary Languages
+
+| Language | Use Case | Why |
+|----------|----------|-----|
+| **Python 3.12** | Analysis scripts, tools, automation | Rich RE ecosystem (capstone, unicorn, pwntools) |
+| **Nix** | Environment, builds, reproducibility | Declarative, reproducible dev environment |
+| **Nushell** | Shell scripts, data pipelines | Structured data, better than bash |
+
+### Tier 2: Domain-Specific
+
+| Language | Use Case |
+|----------|----------|
+| **Ghidra Python (Jython)** | Ghidra scripting |
+| **JavaScript** | Frida hooks |
+| **C** | Low-level tools, firmware mods |
+| **ARM Assembly** | Understanding/patching binaries |
+
+### Tier 3: Avoid
+
+| Language | Why |
+|----------|-----|
+| **Bash** | Use Nushell instead - structured data, safer |
+| **Perl** | Legacy, hard to maintain |
+
+## 🔧 Tool Preferences
+
+### Disassembly/Decompilation
+
+1. **Ghidra** (preferred) - Free, powerful decompiler
+2. **Radare2/Rizin** - Quick analysis, scriptable
+3. **Binary Ninja** - If licensed available
+
+### Binary Analysis
+
+```python
+# Preferred stack
+from capstone import Cs, CS_ARCH_ARM, CS_MODE_THUMB
+from unicorn import Uc, UC_ARCH_ARM
+from construct import Struct, Int32ul
+```
+
+### File Operations
+
+```python
+# Use pathlib, not os.path
+from pathlib import Path
+
+# Use rich for output
+from rich.console import Console
+from rich.table import Table
+```
+
+## 📋 Code Standards
+
+### Python Style
+
+```python
+#!/usr/bin/env python3
+"""
+Module description.
+
+This module does X for the Moto Z research project.
+"""
+
+from __future__ import annotations
+
+import struct
+from dataclasses import dataclass
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+
+@dataclass
+class UnlockData:
+    """Parsed unlock data from fastboot."""
+    
+    hwid: bytes
+    serial: str
+    secure_hash: bytes
+    device_data: bytes
+    
+    @classmethod
+    def from_raw(cls, raw: str) -> UnlockData:
+        """Parse raw unlock data string."""
+        # Implementation
+        ...
+```
+
+### Nushell Scripts
+
+```nu
+#!/usr/bin/env nu
+# analyze-dump.nu - Analyze firmware dump
+
+def main [
+    file: path  # Path to dump file
+    --verbose (-v)  # Enable verbose output
+] {
+    let dump = open $file --raw
+    
+    # Analysis logic
+    print $"Analyzing: ($file)"
+}
+```
+
+### Documentation
+
+- Use markdown for all docs
+- Include code examples
+- Document memory addresses
+- Reference external sources
+
+## 🔒 Security Considerations
+
+### Never Commit
+
+- Private keys or credentials
+- IMEI numbers (in public repos)
+- Unlock keys
+- Sensitive device identifiers
+
+### Safe to Share
+
+- Analysis techniques
+- Generic code patterns
+- Educational content
+- Open-source tools
