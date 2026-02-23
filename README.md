@@ -1,5 +1,11 @@
 # 🔬 Moto Z Research
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![NixOS](https://img.shields.io/badge/NixOS-flake-blue.svg)](flake.nix)
+![Status: Research Paused](https://img.shields.io/badge/Status-Research%20Paused-orange.svg)
+
+> **⏸️ Project Status: PAUSED** — Research phase complete. Awaiting hardware access and time to continue bootloader analysis.
+
 Reverse engineering Motorola bootloader unlock systems and the Moto Mods interface.
 
 ## 🎯 Project Goals
